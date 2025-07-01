@@ -1,0 +1,24 @@
+{
+  "name": "google-drive-calendar-favorites",
+  "version": "0.0.1",
+  "description": "Search through google drive folders and mark files as \"used on: date\". Calendar view shows which files were used on each date. When looking at files highlight/gradient based on last used and most often used.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "test",
+    "build": "npx tsc",
+    "start": "npm run build && node src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bitNathan/Google-Drive-Calendar-Favorites.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bitNathan/Google-Drive-Calendar-Favorites/issues"
+  },
+  "homepage": "https://github.com/bitNathan/Google-Drive-Calendar-Favorites#readme",
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
