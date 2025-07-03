@@ -8,3 +8,4 @@ _Search through google drive folders and mark files as "used on: date". Calendar
 - [ ] show "used: date" metadata when navigating files
 - [ ] react gui
 - [ ] calendar
+- [ ] according to [Google Api tutorial](https://www.npmjs.com/package/googleapis#google-apis) consent screen is specifically required to be official
