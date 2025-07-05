@@ -6,12 +6,12 @@ Appplication (should) support viewing and downloading files along with adding an
 
 ## TODO
 
-_Project is in progress. As always, the todo list gets bigger the more work is done._
+_Project is in progress. As always, todo list is subject to change._
 
 - [x] google drive API authentication
     - [x] cleanup authentication
     - [ ] check if user needs to conset or already has before consent screen is shown
-    - [ ] handle refresh tokens (only needed whes session lasts over an hour)
+    - [ ] handle refresh tokens (only needed when session lasts over an hour)
 - [ ] cli
     - [ ] file navigation
     - [ ] file download

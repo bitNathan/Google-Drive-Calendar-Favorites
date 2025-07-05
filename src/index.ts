@@ -1,6 +1,6 @@
-import {startServer, serverClosed} from './server'
+import {startServer, serverClosed} from './express/server'
 import { google } from 'googleapis';
-import { oauth2Client } from './app'; // if we ever need it here...
+import { oauth2Client } from './express/app'; // if we ever need it here...
 
 async function main(){
 

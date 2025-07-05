@@ -9,7 +9,7 @@ export function getOath2Client(){
         Read file contents to get oath2 keys and create authentication object
     */
    
-    const key_file_path = path.join(__dirname, '../oath2.keys.json')
+    const key_file_path = path.join(__dirname, '../../oath2.keys.json')
     if (!fs.existsSync(key_file_path)){
         const err_str = 
             "Key file path not found: " + 
