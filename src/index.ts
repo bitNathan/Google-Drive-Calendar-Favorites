@@ -1,5 +1,5 @@
 import {startServer, serverClosed} from './express/server'
-import { startCLI } from './cli';
+import { startCLI } from './cli/cli';
 
 async function main(){
 

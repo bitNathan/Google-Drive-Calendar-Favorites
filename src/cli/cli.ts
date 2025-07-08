@@ -1,17 +1,19 @@
 import {getAllFiles, getFile} from './api'
 import { google, drive_v3 } from 'googleapis';
-import { oauth2Client } from './express/app';
+import { oauth2Client } from '../express/app';
 import readline from 'readline';
-import { saveFileData } from './saving';
+import { writeBufferToFile } from './writeToFile';
+import logger from '../logger'
 
 async function downloadFile(drive: drive_v3.Drive, rl: readline.Interface, onDone: () => void){
+    
     console.log("Input any id into this field and press enter to download that file")
     rl.question('File ID: ', async (fileId) => {
         try {
-            const file_buffer = await getFile(drive, fileId.trim());
-            // TODO hardcoded name test_name 
-            await saveFileData(file_buffer, "test_name");
-            console.log('Download complete.');
+            const {buffer: file_buffer, name: file_name} = await getFile(drive, fileId.trim());
+
+            await writeBufferToFile(file_buffer, file_name);
+            logger.info("Downloaded ", file_name)
         } catch (error) {
             console.error('Error downloading file:', error);
         }

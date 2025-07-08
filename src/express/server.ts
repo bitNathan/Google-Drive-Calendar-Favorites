@@ -1,4 +1,5 @@
 import app from './app'
+import logger from '../logger'
 
 let server: any = null;
 let serverClosedResolver: (() => void) | null = null;
@@ -12,16 +13,17 @@ export function startServer() {
     // TODO should save tokens locally
 
     server = app.listen(process.env.PORT || 3000, () => {
-        console.log('Follow this link to authenticate http://localhost:3000/authorize\m' +
+        console.log('Follow this link to authenticate http://localhost:3000/authorize \n' +
             'Please be patient after completion. Authentication may take up to a minute');
     });
-    console.log("")
+
+    logger.info("Server started")
 }
 
 export function shutdownServer() {
     if (server) {
         server.close(() => {
-            console.log('Server shutting down.');
+            logger.info("Server shutting down")
             if (serverClosedResolver) serverClosedResolver();
         });
     }

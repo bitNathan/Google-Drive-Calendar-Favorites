@@ -1,6 +1,9 @@
 import {drive_v3} from 'googleapis'
+import logger from '../logger'
 
 export async function getAllFiles(drive: drive_v3.Drive) {
+   
+    logger.info("Got all drive files")
     return drive.files.list({
         pageSize: 100,
         fields: 'files(id, name)',
@@ -13,7 +16,7 @@ export async function getFile(drive: drive_v3.Drive, file_id:string) {
     //  do so by checking metadata.mimeType
     const metadata = await drive.files.get({
         fileId: file_id,
-        fields: 'size, capabilities',
+        fields: 'size, capabilities, name',
     });
     if (!metadata.data.capabilities?.canDownload) {
         throw new Error('File cannot be downloaded due to permissions.');
@@ -27,5 +30,9 @@ export async function getFile(drive: drive_v3.Drive, file_id:string) {
         { fileId: file_id, alt: 'media', supportsAllDrives: true },
         {responseType:'arraybuffer'}
     )
-    return res.data as ArrayBuffer;
+    // TODO actual name seems to usually be udefined, resolve it some other way since list seems to show actual name
+    // TODO determine file type for extension
+    logger.info("Got file for download: ", file_id)
+    let fileName: string = res.data.name ? res.data.name : file_id
+    return { buffer: res.data as ArrayBuffer, name: fileName };
 }

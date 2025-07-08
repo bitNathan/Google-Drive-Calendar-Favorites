@@ -1,9 +1,10 @@
 import path from "path"
 import { promises as fs } from "fs";
+import {downloadDir} from '../config'
 
-export async function saveFileData(file_data:ArrayBuffer, file_name:string){
-    // TODO file_path arg
-    const save_dir = path.join(__dirname, '../downloads/')
+export async function writeBufferToFile(file_data:ArrayBuffer, file_name:string){
+    const save_dir = downloadDir
+    // TODO assert file contains extension and log a warning if not
 
     // check if save_dir exists and create if not
     try {

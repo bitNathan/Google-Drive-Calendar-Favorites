@@ -1,0 +1,9 @@
+{
+  "downloads": {
+    "directory": "./downloads"
+  },
+  "logging": {
+    "level": "info",
+    "file": "./logs/app.log"
+  }
+}
