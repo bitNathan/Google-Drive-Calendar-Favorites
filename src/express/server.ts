@@ -9,10 +9,13 @@ export const serverClosed = new Promise<void>((resolve) => {
 export function startServer() {
     // TODO handle refresh tokens
     // TODO check if user needs to authorize, should only need to be done once per user
+    // TODO should save tokens locally
 
     server = app.listen(process.env.PORT || 3000, () => {
-        console.log('Follow this link to authenticate http://localhost:3000/authorize');
+        console.log('Follow this link to authenticate http://localhost:3000/authorize\m' +
+            'Please be patient after completion. Authentication may take up to a minute');
     });
+    console.log("")
 }
 
 export function shutdownServer() {
