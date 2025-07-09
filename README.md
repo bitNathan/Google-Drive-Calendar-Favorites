@@ -15,8 +15,11 @@ Appplication (should) support viewing and downloading files along with adding an
     - [x] file download
     - [ ] show "used: date" metadata when navigating files
     - [ ] add metadata to file with format "used: date"
-- [ ] automate testing and create CI/CD pipeline with github actions
+- [ ] MVP checkpoint
+    - [ ] automate testing
+    - [ ] package and create CI/CD pipeline with github actions
 - [ ] react gui
     - [ ] file navigation, download, and add metadata
     - [ ] file metadata highlighting/gradient
     - [ ] calendar
+- [ ] electron desktop app
