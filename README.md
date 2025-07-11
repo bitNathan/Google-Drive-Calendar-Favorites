@@ -10,14 +10,15 @@ Appplication (should) support viewing and downloading files along with adding an
     - [x] cleanup authentication
     - [ ] check if user needs to conset or already has before consent screen is shown
     - [ ] handle refresh tokens (only needed when session lasts over an hour)
-- [ ] cli
+- [x] cli
     - [x] file navigation
     - [x] file download
-    - [ ] show "used: date" metadata when navigating files
-    - [ ] add metadata to file with format "used: date"
+    - [x] show "used: date" metadata when navigating files
+    - [x] add metadata to file with format "used: date"
 - [ ] MVP checkpoint
     - [ ] automate testing
-    - [ ] package and create CI/CD pipeline with github actions
+    - [ ] package executable
+    - [ ] CI/CD pipeline with github actions
 - [ ] react gui
     - [ ] file navigation, download, and add metadata
     - [ ] file metadata highlighting/gradient
