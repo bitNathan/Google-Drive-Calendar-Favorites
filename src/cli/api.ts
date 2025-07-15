@@ -49,21 +49,48 @@ export async function getFileProperties(drive: drive_v3.Drive, file_id:string){
     return metadata.data
 }
 
-export async function setUsedOnDate(drive: drive_v3.Drive, file_id:string, date:string){
-    // TOOD to support using a file on several dates a list of dates in usedOn, 
-    //  to update get appProperties as a string (if any) and then append "date" to that
-    //  finally, rewrite full string to file
-    logger.info("Updating " + file_id + "as last used on " + date)
+export async function clearUsedOnDate(drive: drive_v3.Drive, file_id:string){
     const response = await drive.files.update({
         fileId: file_id,
         supportsAllDrives: true,
         requestBody: {
             appProperties: {
-                usedOn: date
+                usedOn: "" // set as empty string
+            }
+        },
+        fields: 'id, name, appProperties'
+    });
+    
+    logger.info("Successfully cleared ", file_id, " usedOn dates")
+    return response.data
+}
+export async function setUsedOnDate(drive: drive_v3.Drive, file_id:string, date:string){
+    // date ranges validated in cli.ts
+    // TODO seperate this all into helper functions
+    // TODO try catch for errors
+
+    // get appProperties as string, append current arg to that, then update as result
+    const metadata = await drive.files.get({
+        fileId: file_id,
+        fields: 'appProperties',
+    });
+
+    const fileAppProperties = metadata.data.appProperties
+    const currProperties = fileAppProperties
+                ? fileAppProperties.usedOn
+                : "";
+
+    const newProperties = currProperties + ", " + date
+    const response = await drive.files.update({
+        fileId: file_id,
+        supportsAllDrives: true,
+        requestBody: {
+            appProperties: {
+                usedOn: newProperties
             }
         },
         fields: 'id, name, appProperties'
   });
-  logger.info("successfully updated usedOnDate")
+  logger.info("successfully updated ", file_id, "usedOn date to ", date)
   return response.data
 }

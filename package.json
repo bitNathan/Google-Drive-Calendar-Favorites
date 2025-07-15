@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "config": "^4.0.0",
+    "date-fns": "^4.1.0",
     "express": "^5.1.0",
     "googleapis": "^150.0.1",
     "winston": "^3.17.0"

@@ -1,9 +1,10 @@
-import {getAllFiles, getFileContents, getFileProperties, setUsedOnDate} from './api'
+import {getAllFiles, clearUsedOnDate, getFileContents, getFileProperties, setUsedOnDate} from './api'
 import { google, drive_v3 } from 'googleapis';
 import { oauth2Client } from '../express/app';
 import readline from 'readline';
 import { writeBufferToFile } from './writeToFile';
 import logger from '../logger'
+import { parse, isValid } from 'date-fns';
 
 // TODO make helper fuynction for all these prompt things
 // TODO fully integrate with logger
@@ -55,12 +56,44 @@ async function logFileProperties(drive: drive_v3.Drive, rl: readline.Interface, 
     });
 }
 
+function isStrValidDate(date:string){
+    const parsedDate = parse(date.trim(), "yyyyMMdd", new Date)
+
+    return isValid(parsedDate)
+}
+
+function isValidDateRange(start:string, end:string){
+    const start_date = parse(start.trim(), "yyyyMMdd", new Date)
+    const end_date = parse(end.trim(), "yyyyMMdd", new Date)
+
+    if (isValid(start_date) && isValid(end_date) && start_date <= end_date) return true
+    return false
+}
+
 async function setUsedOnDateCLI(drive: drive_v3.Drive, rl: readline.Interface, onDone: () => void){
-    console.log("Input any id into this field, press enter, then input a date and hit enter again.")
+    console.log("Input any id into this field, press enter, then input a date (with format yyyyMMdd) and hit enter again."+
+        "\n  To input a date range use format \"yyyyMMdd - yyyyMMdd\". To input multiple dates use format yyyyMMdd, yyyyMMdd, ..."
+    )
     rl.question('File ID: ', async (fileId) => {
-        rl.question('Date: ', async (date) => {
+        rl.question('Date: ', async (userDateStr) => {
             try {
-                await setUsedOnDate(drive, fileId, date)
+                 userDateStr.split(',').forEach(part => {
+                    // split userDateStr on commas and validate seperately, send one big string to func
+                    // if data contains "-" then it's a range and validate each part
+                    if (part.includes("-")){
+                        const [start, end] = part.split('-').map(s => s.trim());
+                        if (!isValidDateRange(start, end)) throw new Error("Invalid date range\n  "+
+                            part + "is not a valid date range"
+                        )
+                    }
+                    else{
+                        // handle comma seperated and single dates
+                        if (!isStrValidDate(part)) throw new Error("Invalid date format\n" + 
+                            "  got date -> " + part +"\n  Expected yyyyMMdd format")
+                    }
+                 });
+                // writes a single date, comma seperated list, or a range via hyphen
+                await setUsedOnDate(drive, fileId, userDateStr)
             } catch (error) {
                 logger.error('Error setting used on date:', error);
             }
@@ -69,6 +102,17 @@ async function setUsedOnDateCLI(drive: drive_v3.Drive, rl: readline.Interface, o
     });
 }
 
+async function clearUsedOnDateCLI(drive: drive_v3.Drive, rl: readline.Interface, onDone: () => void){
+    console.log("Input any id into this field to clear the last used properties.")
+    rl.question('File ID: ', async (fileId) => {
+        try {
+            await clearUsedOnDate(drive, fileId)
+        } catch (error) {
+            logger.error('Error clearing file used on properties:', error);
+        }
+        onDone(); // resume after second prompt completes, not first
+    });
+}
 export async function startCLI(){
     const drive = google.drive({ version: 'v3', auth: oauth2Client });  
     
@@ -99,6 +143,10 @@ export async function startCLI(){
                 case 'set':
                     await setUsedOnDateCLI(drive, rl, prompt) // TODO bad naming, should change when I have an idea
                     break;
+                case 'c':
+                case 'clear':
+                    await clearUsedOnDateCLI(drive, rl, prompt)
+                    break;
                 case 'q':
                 case 'quit':
                     rl.close();
@@ -108,7 +156,8 @@ export async function startCLI(){
                     // TODO auto show available commands
                     console.log("HELP: "+
                         "\n  show all files with `ls`, download a file with `d`, quit with `q`"+
-                        "\n  see a file's properties with p, and set a file's properties with s")
+                        "\n  see a file's properties with p, and set a file's properties with s" +
+                        "\n  press c to clear a file's usedOn data")
                     prompt();
                     break;
                 default:
