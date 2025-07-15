@@ -24,10 +24,12 @@ Appplication (should) support viewing and downloading files along with adding an
     - [ ] automate security checks and testing
     - [ ] package executable
     - [ ] CI/CD pipeline with github actions
+    - [ ] update settings/config via cli
 - [ ] react gui
     - [ ] file navigation, download, and add metadata
     - [ ] file metadata highlighting/gradient/sorting when navigating
     - [ ] calendar view
+    - [ ] settings/config
 - [ ] packaging targets
     - [ ] deploy to render
         - [ ] split app into "web", "desktop", and "shared" files to split builds in mono-repo
