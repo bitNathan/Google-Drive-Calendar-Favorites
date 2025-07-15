@@ -35,3 +35,4 @@ Appplication (should) support viewing and downloading files along with adding an
         - [ ] split app into "web", "desktop", and "shared" files to split builds in mono-repo
         - [ ] use render's postgress db to store oath data instead of local json
     - [ ] electron desktop app
+- [ ] Google app verification
