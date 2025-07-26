@@ -1,5 +1,9 @@
 build/*
 node_modules/*
+
 *.log
-oath2.keys.json
 downloads/*
+
+oath2.keys.json
+oauthClientInfo.json
+

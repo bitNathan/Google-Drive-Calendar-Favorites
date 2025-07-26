@@ -3,8 +3,8 @@ import { startCLI } from './cli/cli';
 
 async function main(){
 
-  startServer()
-  await serverClosed;
+  const wasServerStarted = await startServer()
+  if (wasServerStarted) await serverClosed;
 
   startCLI()
 }

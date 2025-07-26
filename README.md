@@ -4,35 +4,12 @@ _Search through google drive folders and mark files as "used on: date". Calendar
 Appplication (should) support viewing and downloading files along with adding and viewing metadata.
 - Notably doesn't add file uploading or editing.
 
-## TODO
+## Roadmap
 
-- [ ] google drive API authentication
-    - [x] functional authentication
-    - [ ] save oath tokens to encrypted local file for persistance
-    - [ ] check if user needs to consent or already has before consent screen is shown
-    - [ ] handle refresh tokens (only needed when session lasts over an hour)
-    - [ ] use custom URI scheme and enforce PKCE
-- [ ] cli
-    - [x] file navigation
-    - [x] file download
-    - [x] show "used: date" metadata when navigating files
-    - [x] add metadata to file with format "used: date"
-    - [ ] "comfortable" file/folder navigation (instead of listing every file in drive...)
-    - [ ] get files with usedOn dates within restrictions
-    - [ ] pagination (to essentially all of above api calls)
-- [ ] MVP checkpoint
-    - [ ] automate security checks and testing
-    - [ ] package executable
-    - [ ] CI/CD pipeline with github actions
-    - [ ] update settings/config via cli
-- [ ] react gui
-    - [ ] file navigation, download, and add metadata
-    - [ ] file metadata highlighting/gradient/sorting when navigating
-    - [ ] calendar view
-    - [ ] settings/config
-- [ ] packaging targets
-    - [ ] deploy to render
-        - [ ] split app into "web", "desktop", and "shared" files to split builds in mono-repo
-        - [ ] use render's postgress db to store oath data instead of local json
-    - [ ] electron desktop app
-- [ ] Google app verification
+| Status | Task                       | Subtasks                                                                                   |
+|--------|----------------------------|--------------------------------------------------------------------------------------------|
+| ☐      | Google Drive API Auth      | ✔ functional authentication <br> ☐ encrypt OAuth tokens in local file <br> ✔ check if user needs to consent or already has before consent screen is shown <br> ✔ handle refresh tokens (only needed when session lasts over an hour) <br> ☐ use custom URI scheme and enforce PKCE |
+| ☐      | CLI                        | ✔ file navigation <br> ✔ file download <br> ✔ show "used: date" metadata when navigating files <br> ✔ add metadata to file with format "used: date" <br> ☐ "comfortable" file/folder navigation (instead of listing every file in drive...) <br> ☐ get files with usedOn dates within restrictions <br> ☐ pagination (to essentially all of above api calls) |
+| ☐      | MVP Checkpoint             | ☐ package executable <br> ☐ CI/CD pipeline with github actions <br> ☐ automate security checks and testing <br> ☐ update settings/config via cli <br> ☐ Google app verification |
+| ☐      | React GUI                  | ☐ file navigation, download, and add metadata <br> ☐ file metadata highlighting/gradient/sorting when navigating <br> ☐ calendar view <br> ☐ settings/config |
+| ☐      | Packaging Targets          | ☐ electron desktop app <br> ☐ deploy to render <br> &nbsp;&nbsp; ☐ split app into "web", "desktop", and "shared" files to split builds in mono-repo <br> &nbsp;&nbsp; ☐ use render's postgress db to store oath data instead of local json |

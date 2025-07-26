@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express';
-import { getOath2Client, authorize, oauth2callback } from './authController';
+import { getOauth2Client, authorize, oauth2callback } from './authController';
 
 const app = express()
-const oauth2Client = getOath2Client()
+const oauth2Client = getOauth2Client()
 const scope = "https://www.googleapis.com/auth/drive"
 const request_state = 'gdcf-oath2-callback'
 

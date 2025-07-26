@@ -9,4 +9,7 @@ const logLevel: string = config.get('logging.level');
 const logFileRelPath: string = config.get('logging.file');
 const logFilePath = path.resolve(process.cwd(), logFileRelPath);
 
-export { downloadDir, logLevel, logFilePath };
+const oauthFileRelPath: string = config.get('oauth.file');
+const oauthFilePath = path.resolve(process.cwd(), oauthFileRelPath);
+
+export { downloadDir, logLevel, logFilePath, oauthFilePath };
