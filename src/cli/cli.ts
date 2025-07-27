@@ -1,4 +1,4 @@
-import {getAllFiles, clearUsedOnDate, getFileContents, getFileProperties, setUsedOnDate} from './api'
+import {getAllFilesWithinFolder, clearUsedOnDate, getFileContents, getFileProperties, setUsedOnDate, getAllFoldersWithinFolder} from './api'
 import { google, drive_v3 } from 'googleapis';
 import { oauth2Client } from '../express/app';
 import readline from 'readline';
@@ -8,6 +8,7 @@ import { parse, isValid } from 'date-fns';
 
 // TODO make helper fuynction for all these prompt things
 // TODO fully integrate with logger
+// TODO instead of having several prompts for each, parse the initial arg and use that info
 
 async function downloadFile(drive: drive_v3.Drive, rl: readline.Interface, onDone: () => void){
     
@@ -25,11 +26,37 @@ async function downloadFile(drive: drive_v3.Drive, rl: readline.Interface, onDon
     });
 }
 
-async function logFileList(drive: drive_v3.Drive){
-    const res = await getAllFiles(drive)
-    console.log('Files:');
-        res.data.files?.forEach(file => {
-        console.log(`  ${file.name} (${file.id})`);
+async function logFoldersWithinFolder(drive: drive_v3.Drive, rl: readline.Interface, onDone: () => void){
+    console.log("Input a folder id to get folders within that folder (keep blank to get folders within root)")
+    rl.question('File ID: ', async (folderID) => {try {
+        if (folderID.trim() == "") folderID = "root"
+        const folders = await getAllFoldersWithinFolder(drive, folderID);
+
+        console.log('Folders:');
+        folders.data.files?.forEach(file => {
+            console.log(`  ${file.name} (${file.id})`);
+        });
+        } catch (error) {
+            logger.error('Error fetching folders:', error);
+        }
+        onDone();
+    });
+}
+
+async function logFileList(drive: drive_v3.Drive, rl: readline.Interface, onDone: () => void){
+    console.log("Input a folder id to get files within that folder (keep blank to get files within root)")
+    rl.question('File ID: ', async (folderID) => {try {
+        if (folderID.trim() == "") folderID = "root"
+        const files = await getAllFilesWithinFolder(drive, folderID);
+
+        console.log('Files within ' + folderID +":");
+        files.data.files?.forEach(file => {
+            console.log(`  ${file.name} (${file.id})`);
+        });
+        } catch (error) {
+            logger.error('Error fetching files:', error);
+        }
+        onDone();
     });
 }
 
@@ -125,11 +152,14 @@ export async function startCLI(){
     async function prompt() {
         rl.question('Enter a command: ', async (input) => {
             switch (input.trim()) {
+                case 'folders':
+                case 'f':
+                    await logFoldersWithinFolder(drive, rl, prompt);
+                    break;
                 case 'ls':
                 case 'files':
                 case 'list':
-                    await logFileList(drive);
-                    prompt();
+                    await logFileList(drive, rl, prompt);
                     break;
                 case 'd':
                 case 'download':
@@ -158,7 +188,6 @@ export async function startCLI(){
                         "\n  show all files with `ls`, download a file with `d`, quit with `q`"+
                         "\n  see a file's properties with p, and set a file's properties with s" +
                         "\n  press c to clear a file's usedOn data")
-                    prompt();
                     break;
                 default:
                     console.log('Unknown command. Use `h` or `help` to see all possible commands');

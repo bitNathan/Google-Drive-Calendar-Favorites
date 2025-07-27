@@ -3,10 +3,26 @@ import logger from '../logger'
 
 // TODO try/catch blocks and logger integration
 
-export async function getAllFiles(drive: drive_v3.Drive) {
+export async function getAllFoldersWithinFolder(drive: drive_v3.Drive, parent_folder_id:string) {
    
-    logger.info("Got all drive files")
+    logger.info("Got all folders within: " + parent_folder_id)
+    // TODO pagination
+    const folders_within_parent = await drive.files.list({
+        q: `'${parent_folder_id}' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false`,
+        pageSize: 100,
+        fields: 'files(id, name, mimeType, parents)',
+    });
+
+    return folders_within_parent
+}
+
+export async function getAllFilesWithinFolder(drive: drive_v3.Drive, parent_folder_id:string) {
+   
+    logger.info("Got all drive files within " + parent_folder_id)
+    // TODO pagination
+    // TODO specify mimeType?
     return drive.files.list({
+        q: `'${parent_folder_id}' in parents and trashed = false`,
         pageSize: 100,
         fields: 'files(id, name)',
     });
