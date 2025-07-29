@@ -211,7 +211,8 @@ async function prompt(rl: readline.Interface, drive: drive_v3.Drive): Promise<bo
 export async function startCLI(){
     const drive = google.drive({ version: 'v3', auth: oauth2Client });  
     
-    console.log("Welcome to the Google Drive Calendar CLI")
+    console.log("Welcome to the Google Drive Calendar CLI\n\
+          FileIDs will be shown within parenthesis following the file/folder name, copy and paste where required")
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
